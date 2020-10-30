@@ -10,6 +10,8 @@ from termcolor import colored
 from probes.state_probes import test_status_with_ping
 
 
+#Une modification inutile
+
 def check_websites(filename, color=False):
     """Extracts website from file and run a probe on it.  Results are immediately displayed. """
     #Extract list of sites from file given in parameters

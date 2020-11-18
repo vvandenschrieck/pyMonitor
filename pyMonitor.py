@@ -8,30 +8,20 @@ import argparse
 from termcolor import colored
 
 from probes.state_probes import test_status_with_ping
+from website.utils import load_sites
 
-
-#Une modification inutile
 
 def check_websites(filename, color=False):
     """Extracts website from file and run a probe on it.  Results are immediately displayed. """
-    #Extract list of sites from file given in parameters
-    sites = []
-    try:
-        with open(filename) as file:
-            for line in file:
-                line = line.strip()
-                if line == "":
-                    continue
-                sites.append(line)
-    except(FileNotFoundError):
-        print("Erreur : Fichier introuvable")
-        return
+    # Extract list of sites from file given in parameters
+    sites = load_sites(filename)
     for site in sites:
-        if (color):
-            result = colored("Accessible", "green") if test_status_with_ping(site) else colored("Inaccessible", "red")
+        site.test()
+        if color:
+            result = colored("Accessible", "green") if site.status == "OK" else colored("Inaccessible", "red")
         else:
-            result = "Accessible" if test_status_with_ping(site) else "Inaccessible"
-        print(f"{site} \t\t: \t\t {result}")
+            result = "Accessible" if site.status == "OK" else "Inaccessible"
+        print(f"{site.name} \t\t: \t\t {result}")
 
 
 if __name__ == '__main__':
@@ -40,9 +30,9 @@ if __name__ == '__main__':
     # File argument
     parser.add_argument('file', metavar='FILE', help="file containing the list of websites to monitor, one per line.", )
     # Activate text coloring
-    parser.add_argument("-c","--color", help="display colored test result", action="store_true")
+    parser.add_argument("-c", "--color", help="display colored test result", action="store_true")
     args = parser.parse_args()
     if args.color:
         check_websites(args.file, color=True)
-    else :
+    else:
         check_websites(args.file)

@@ -4,24 +4,44 @@
 
 # Press ⌃R to execute it or replace it with your code.
 # Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
-import argparse
+import argparse, cmd
 from termcolor import colored
 
 from probes.state_probes import test_status_with_ping
 from website.utils import load_sites
 
 
-def check_websites(filename, color=False):
-    """Extracts website from file and run a probe on it.  Results are immediately displayed. """
-    # Extract list of sites from file given in parameters
-    sites = load_sites(filename)
-    for site in sites:
-        site.test()
-        if color:
-            result = colored("Accessible", "green") if site.status == "OK" else colored("Inaccessible", "red")
-        else:
-            result = "Accessible" if site.status == "OK" else "Inaccessible"
-        print(f"{site.name} \t\t: \t\t {result}")
+class PyMonitorShell(cmd.Cmd):
+    intro = 'Welcome to the PyMonitor shell.   Type help or ? to list commands.\n'
+    prompt = '(PyMonitor) '
+    __color = False
+    __sites = []
+
+    def __init__(self, filename, color=False):
+        super().__init__()
+        self.__sites = load_sites(filename)
+        self.__color = color
+
+    def do_display_all(self, arg):
+        """Display sites status"""
+        color = True
+        for site in self.__sites:
+            if color:
+                result = colored("Accessible", "green") if site.status == "OK" else colored("Inaccessible", "red")
+            else:
+                result = "Accessible" if site.status == "OK" else "Inaccessible"
+            print(f"{site.name} \t\t: \t\t {result}")
+
+    def do_test_all(self, arg):
+        """Test all sites then display their status"""
+        for site in self.__sites:
+            site.test()
+        self.do_display_all(None)
+
+    def do_bye(self, arg):
+        'Exit program'
+        print('Thank you for using PyMonitor')
+        return True
 
 
 if __name__ == '__main__':
@@ -32,7 +52,6 @@ if __name__ == '__main__':
     # Activate text coloring
     parser.add_argument("-c", "--color", help="display colored test result", action="store_true")
     args = parser.parse_args()
-    if args.color:
-        check_websites(args.file, color=True)
-    else:
-        check_websites(args.file)
+
+    # Run cmdloop to get user commands
+    PyMonitorShell(args.file, args.color).cmdloop()

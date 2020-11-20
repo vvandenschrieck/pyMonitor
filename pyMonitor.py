@@ -6,8 +6,6 @@
 # Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
 import argparse, cmd
 from termcolor import colored
-
-from probes.state_probes import test_status_with_ping
 from website.utils import load_sites
 
 
@@ -27,7 +25,8 @@ class PyMonitorShell(cmd.Cmd):
         color = True
         for site in self.__sites:
             if color:
-                result = colored("Accessible", "green") if site.status == "OK" else colored("Inaccessible", "red")
+                result = colored("Accessible", "green") \
+                    if site.status == "OK" else colored("Inaccessible", "red")
             else:
                 result = "Accessible" if site.status == "OK" else "Inaccessible"
             print(f"{site.name} \t\t: \t\t {result}")
@@ -48,9 +47,11 @@ if __name__ == '__main__':
     # Use parseargs to get params and options
     parser = argparse.ArgumentParser(description='Easy Websites Monitoring.')
     # File argument
-    parser.add_argument('file', metavar='FILE', help="file containing the list of websites to monitor, one per line.", )
+    parser.add_argument('file', metavar='FILE',
+                        help="file containing the list of websites to monitor, one per line.", )
     # Activate text coloring
-    parser.add_argument("-c", "--color", help="display colored test result", action="store_true")
+    parser.add_argument("-c", "--color", help="display colored test result",
+                        action="store_true")
     args = parser.parse_args()
 
     # Run cmdloop to get user commands

@@ -4,9 +4,8 @@
 
 # Press ⌃R to execute it or replace it with your code.
 # Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
-import argparse, cmd
+import cmd
 from termcolor import colored
-from website.utils import load_sites
 
 
 class PyMonitorShell(cmd.Cmd):
@@ -46,3 +45,6 @@ class PyMonitorShell(cmd.Cmd):
         Cmd library conventions.
         """
         self.do_display_all(None)
+
+    def msg(self,msg):
+        print(msg)

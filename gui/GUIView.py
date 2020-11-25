@@ -1,3 +1,4 @@
+import threading
 from datetime import datetime
 
 from kivy import Config
@@ -34,6 +35,7 @@ class GUIView(App):
         box = self.root.ids.site_status_box
         box.clear_widgets()
         grid = GridLayout(rows=len(sites), cols=2)
+        # Create a Label + Tag for each site
         for site, status in sites.items():
             grid.add_widget(Label(text=site))
             tag = StatusTag()
@@ -42,9 +44,18 @@ class GUIView(App):
             grid.add_widget(tag)
         box.add_widget(grid)
 
-    def test_all(self):
-        self.__presenter.test_all()
+        # Clear previous messages
+        self.root.ids.msg_label.text = ""
 
+    def test_all(self):
+
+        # Run in a thread to prevent GUI blocking.
+        # DANGER : Not thread-safe!
+        x = threading.Thread(target=self.__presenter.test_all)
+        x.start()
+
+    def msg(self, msg):
+        self.root.ids.msg_label.text = msg
 
 # if __name__ == "__main__":
 #     Config.set('graphics', 'width', '600')

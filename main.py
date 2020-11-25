@@ -4,7 +4,8 @@ from Presenter import Presenter
 
 from shell.ShellView import PyMonitorShell
 from gui.GUIView import GUIView
-from website.utils import load_sites
+from website import website
+
 
 if __name__ == '__main__':
     # # Use parseargs to get params and options
@@ -18,7 +19,7 @@ if __name__ == '__main__':
     # args = parser.parse_args()
 
     # Load model
-    sites = load_sites("./sites.txt")
+    sites = website.WebsitesList("./sites.txt")
 
     # Launch view and presenter for ConsoleUI
     shell_pres = Presenter(sites)

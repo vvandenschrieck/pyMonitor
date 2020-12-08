@@ -19,7 +19,7 @@ if __name__ == '__main__':
     # args = parser.parse_args()
 
     # Load model
-    sites = website.WebsitesList("./sites.txt")
+    sites = website.WebsitesList("data/sites.txt")
 
     # Launch view and presenter for ConsoleUI
     shell_pres = Presenter(sites)
@@ -27,7 +27,7 @@ if __name__ == '__main__':
     shell_pres.set_view(shell_view)
     x = threading.Thread(target=shell_view.cmdloop, args=(1,))
     x.start()
-
+    #shell_view.cmdloop()
     # Lauch view and presenter for GUI
     gui_pres = Presenter(sites)
     gui_view = GUIView(gui_pres)

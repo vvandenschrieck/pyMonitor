@@ -31,6 +31,7 @@ class GUIView(App):
         super(GUIView, self).__init__(**kwargs)
 
     def refresh(self):
+        """Appelée par le présentateur lorsqu'il faut rafraichir la vue"""
         sites = self.__presenter.sites()
         box = self.root.ids.site_status_box
         box.clear_widgets()
@@ -48,7 +49,7 @@ class GUIView(App):
         self.root.ids.msg_label.text = ""
 
     def test_all(self):
-
+        """Callback lorsque l'utilisateur souhaite retester les sites"""
         # Run in a thread to prevent GUI blocking.
         # DANGER : Not thread-safe!
         x = threading.Thread(target=self.__presenter.test_all)

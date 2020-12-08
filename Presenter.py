@@ -1,4 +1,4 @@
-class Presenter():
+class Presenter:
     """This class controls the console view
     author: V. Van den Schrieck
     date: November 2020

@@ -74,7 +74,7 @@ class WebsitesList():
         for site in self.__sites :
             self.notify("Testing "+site.name+" ...")
             site.test()
-        self.notify()
+            self.notify() # Update display after each test
 
     # Implementation of Observer pattern - Observable side - Not thread-safe!
 

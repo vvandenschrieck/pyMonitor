@@ -1,3 +1,0 @@
-Google;www.google.com;ping
-Ephec;www.ephec.be;ping
-Ephec-TI;www.ephec-ti.be;ping

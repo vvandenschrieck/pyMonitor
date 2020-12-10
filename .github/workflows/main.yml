@@ -35,4 +35,4 @@ jobs:
           pip install pylint
       - name: Run Pylint
         run: |
-            pylint ./*
+            pylint ./* --fail-under 3

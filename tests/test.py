@@ -34,5 +34,6 @@ class TestWebsite():
         site.test()
         assert site.status == "KO"
 
-
+    def test_demo(self):
+        assert 1 == 2
 

@@ -2,6 +2,7 @@ import os
 import sys
 import threading
 import logging
+from logging import handlers
 
 os.environ["KIVY_NO_CONSOLELOG"] = "1"
 
@@ -26,18 +27,26 @@ if __name__ == '__main__':
 
     formatter = logging.Formatter("[%(levelname)s] %(asctime)s -- %(name)s -- %(message)s")
 
-    handler1 = logging.handlers.TimedRotatingFileHandler(
-        "logs/info.log", when="s", interval=20, encoding="utf-8")
+    # Create log directory
+
+    try:
+        os.makedirs(resource_path('logs'))
+    except OSError as e:
+        if e.errno != errno.EEXIST:
+            raise
+
+    handler1 = handlers.TimedRotatingFileHandler(resource_path(
+        "logs/info.log"), when="s", interval=20, encoding="utf-8")
     handler1.setLevel(logging.INFO)
     handler1.setFormatter(formatter)
     logger.addHandler(handler1)
-    handler2 = logging.handlers.TimedRotatingFileHandler(
-        "logs/error.log", when="s", interval=5, encoding="utf-8")
+    handler2 = handlers.TimedRotatingFileHandler(resource_path(
+        "logs/error.log"), when="s", interval=20, encoding="utf-8")
     handler2.setLevel(logging.ERROR)
     handler2.setFormatter(formatter)
     logger.addHandler(handler2)
-    handler3 = logging.handlers.TimedRotatingFileHandler(
-        "logs/debug.log", when="s", interval=5, encoding="utf-8")
+    handler3 = handlers.TimedRotatingFileHandler(resource_path(
+        "logs/debug.log"), when="s", interval=20, encoding="utf-8")
     handler3.setLevel(logging.DEBUG)
     handler3.setFormatter(formatter)
     logger.addHandler(handler3)
